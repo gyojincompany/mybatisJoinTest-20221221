@@ -1,5 +1,11 @@
 package com.gyojincompany.test;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +22,7 @@ public class JoinController {
 	private SqlSession sqlSession;
 	
 	@RequestMapping(value = "test")
-	public String test(Model model) {
+	public String test(Model model, HttpServletResponse response) throws IOException {
 			
 		IDao dao = sqlSession.getMapper(IDao.class);		
 		
@@ -26,6 +32,14 @@ public class JoinController {
 		
 		model.addAttribute("boardInfo", boardDto);
 		
+		//특정 페이지로 이동전에 자바스크립트 경고창 띄우기
+		response.setContentType("text/html; charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        out.println("<script>alert('로그인 정보를 확인해주세요.'); history.go(-1);</script>");
+        out.flush(); 
+		
 		return "test";
 	}
+	
+	
 }
