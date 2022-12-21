@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.gyojincompany.test.dao.IDao">
+	
+	<resultMap type="com.gyojincompany.test.dto.MemberDto" id="memberDto2">
+		<result property="id" column="id"/>
+		<result property="pw" column="pw"/>
+		<result property="name" column="name"/>
+		<result property="email" column="email"/>	
+	</resultMap>
+	
+	<resultMap type="com.gyojincompany.test.dto.BoardDto" id="boardDto2">
+		<result property="writerid" column="writerid"/>
+		<result property="title" column="title"/>
+		<result property="content" column="content"/>
+		<result property="createTime" column="createTime"/>	
+		
+		<collection property="memberDto" resultMap="memberDto2"></collection>
+	</resultMap>
+	
+	<select id="joinTest" parameterType="com.gyojincompany.test.dto.BoardDto" resultMap="boardDto2">
+		
+		SELECT 
+			joinboard.writerid , joinboard.title, joinboard.createTime,
+			joinmember.name, joinmember.email 
+		FROM
+			joinboard
+			JOIN joinmember
+			ON joinboard.writerid = joinmember.id
+		WHERE joinboard.writerid=#{id}
+		
+		
+	</select>
+</mapper>	
